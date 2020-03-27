@@ -3,6 +3,9 @@
 `$ yarn add express body-parser ngrok`
 `$ yarn add did-jwt uport-credentials uport-transports`
 
+generate-vc.js
+`$ yarn add axios form-data`
+
 [disclosure-request-login-service](https://developer.uport.me/credentials/login#disclosure-request-login-service)
 
 ![Alt server-login](https://developer.uport.me/static/ac1d5b0471fb8a825c4eb9f6b81db294/7a2d1/server-login.png)
@@ -38,6 +41,43 @@ const credentials = new Credentials({
       }
 })
 ```
+
+## Note
+
+[JWT 的原理](https://www.ruanyifeng.com/blog/2018/07/json_web_token-tutorial.html)是，服務器認證以後，生成一個 JSON 對象，發回給用戶
+
+```json
+{
+  "姓名": "張三",
+  "角色": "管理員",
+  "到期時間": "2020年7月1日0點0分"
+}
+```
+
+用戶與服務端通信的時候，都要發回這個 JSON 對象。服務器完全只靠這個對象認定用戶身份。為了防止用戶篡改數據，服務器在生成這個對象的時候，會加上簽名（詳見後文）。
+
+服務器就不保存任何 session 數據了，也就是說，服務器變成無狀態了，從而比較容易實現擴展。
+
+JWT 的最大缺點是，由於服務器不保存 session 狀態，因此無法在使用過程中廢止某個 token，或者更改 token 的權限。也就是說，一旦 JWT 簽發了，在到期之前就會始終有效，除非服務器部署額外的邏輯。
+
+JWT 默認是不加密，為了減少盜用，JWT 不應該使用 HTTP 協議明碼傳輸，要使用 HTTPS 協議傳輸。
+
+[JSON Web Token(JWT) 簡單介紹](https://mgleon08.github.io/blog/2018/07/16/jwt/)
+iss (Issuer) - jwt簽發者 The DID of the signing identity  
+sub (Subject) - jwt所面向的用戶 The DID of the subject identity  
+
+[createverification](https://developer.uport.me/credentials/createverification) [Verified Claims](https://developer.uport.me/messages/verification) 已驗證的聲明
+
+`vc` Array of Verified Claims JWTs or IPFS hash of JSON encoded equivalent about the `iss` of this message
+
+
+###　JWT 的使用方式
+
+客戶端收到服務器返回的 JWT，可以儲存在 Cookie 裡面，也可以儲存在 localStorage。
+
+此後，客戶端每次與服務器通信，都要帶上這個 JWT。你可以把它放在 Cookie 裡面自動發送，但是這樣不能跨域，所以更好的做法是放在 HTTP 請求的頭信息Authorization字段裡面。
+
+`Authorization: Bearer <token>`
 
 ## References
 
