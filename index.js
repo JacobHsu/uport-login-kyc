@@ -5,6 +5,7 @@ const decodeJWT = require('did-jwt').decodeJWT
 const { Credentials } = require('uport-credentials')
 const transports = require('uport-transports').transport
 const message = require('uport-transports').message.util
+var { send } = require('./push')
 
 let endpoint = ''
 const app = express();
@@ -64,6 +65,31 @@ app.post('/callback', (req, res) => {
       .then(pushData => {
         console.log("Pushed to user: "+JSON.stringify(pushData))
         
+      })
+
+      // https://github.com/uport-project/text-push-example
+
+      const message = {
+        sub: userProfile.did,
+        type: 'info',
+        title: "Onfido haven't been able to issue your Onfido ID",
+        body: "As this service is still in beta, we don't have troubleshooting support yet, but do read our FAQs for more information.",
+        ctaUrl: 'http://www.onfido.com/',
+        ctaTitle: 'Go to FAQs',
+        // vc: ['/ipfs/QmZ9PEntS99Mf74ZQspgAwR3WasNzL4HuAUUMN9VEopPPP'],
+      }
+      const push = send(userProfile.pushToken, userProfile.boxPub)
+      credentials.signJWT(message).then(attestation => {
+        console.log(`Encoded JWT sent to user: ${attestation}`)
+        console.log(`Decodeded JWT sent to user: ${JSON.stringify(decodeJWT(attestation))}`)
+        return push(attestation,
+          {alert: "Onfido haven't been able to issue your Onfido ID"}
+        )  // *push* the notification to the user's uPort mobile app.
+      }).then(res => {
+        console.log(res)
+        console.log('Push notification sent and should be recieved any moment...')
+        console.log('Accept the push notification in the uPort mobile application')
+        // ngrok.disconnect()
       })
   
     })
