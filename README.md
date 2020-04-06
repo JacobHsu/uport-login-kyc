@@ -1,14 +1,24 @@
 # uport-login-kyc
 
-`$ yarn add express body-parser ngrok`
-`$ yarn add did-jwt uport-credentials uport-transports`
+`$ yarn add express body-parser ngrok`  
+`$ yarn add did-jwt uport-credentials uport-transports`  
 
-generate-vc.js
+generate-vc.js `Verified Claims`  
 `$ yarn add axios form-data`
 
 [disclosure-request-login-service](https://developer.uport.me/credentials/login#disclosure-request-login-service)
 
 ![Alt server-login](https://developer.uport.me/static/ac1d5b0471fb8a825c4eb9f6b81db294/7a2d1/server-login.png)
+
+## Usage
+
+`$ yarn start`
+
+`$ yarn id` node create-identity.js  
+create the application identity that will be used to sign requests:
+
+`$ yarn vc`  node generate-vc.js  
+Add this to your uport requests: vc: ['/ipfs/QmWRcNoU1qdkPE49eT13MdZsLCfxPhVKLvdoG9Z6etmefN']
 
 ## sample
 

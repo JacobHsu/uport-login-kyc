@@ -22,6 +22,7 @@ const credentials = new Credentials({
       }
 })
 
+// Selective Disclosure Request
 app.get('/', (req, res) => {
     //Create a new disclosure request, requesting the push notification token and a new key
     credentials.createDisclosureRequest({
@@ -39,6 +40,7 @@ app.get('/', (req, res) => {
     })
 })
 
+// Disclosure Response Authentication Service
 // after scan QR
 app.post('/callback', (req, res) => {
     const access_token = req.body.access_token
