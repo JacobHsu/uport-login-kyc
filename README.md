@@ -7,8 +7,25 @@ generate-vc.js `Verified Claims`
 `$ yarn add axios form-data`
 
 [disclosure-request-login-service](https://developer.uport.me/credentials/login#disclosure-request-login-service)
+> The uPort Wallet application provides a simple consent interface for dapps to request private data from users, and users can approve or reject this request. This interface is called **Selective Disclosure Request**, and it gives users complete control over their identity data.
 
 ![Alt server-login](https://developer.uport.me/static/ac1d5b0471fb8a825c4eb9f6b81db294/7a2d1/server-login.png)
+
+### 可驗證聲明（Verifiable Claim）
+
+`Verifiable Claim`，簡稱`Claim`，是`發證方`使用自己的 DID 給`用戶`的 DID 的某些屬性做背書而簽發的描述性聲明，並附加自己的數字簽名，可以認為是一種數字證書。
+
+uport /[requestverification](https://developer.uport.me/credentials/requestverification) Claims / [Issuer Claims](https://developer.uport.me/messages/claims)
+as an array of IPFS hashes containing individual JWTs.
+
+```js
+ vc: ['/ipfs/QmWE2pDhzcaa6jN1YQCgisBtBqF5uUCeQrfVAvGqoX4BEx'],
+```
+https://ipfs.io/ipfs/QmQv5SGMV8Kn1tzqQEA6a6FbC6k2CRXzmVUPVXGmoGKjzB
+
+About image links: Images must be stored in `IPFS`. This is to avoid malicious tracking of users through images.
+
+did.baidu [可验证声明](https://did.baidu.com/verifiable-claim/)
 
 ## Usage
 
@@ -93,3 +110,4 @@ sub (Subject) - jwt所面向的用戶 The DID of the subject identity
 
 [ngrok](https://ngrok.com/product) exposes local servers behind NATs and firewalls to the public internet over secure tunnels.
 [text-push-example](https://github.com/uport-project/text-push-example)
+[All you need to know about uPort Identity management](https://medium.com/@hamzamaslah/all-you-need-to-know-about-uport-identity-management-3fc49db25332)
